@@ -22,7 +22,6 @@ import Network.HTTP.Types qualified as HT
 import Paths_hoauth2 (version)
 import URI.ByteString
 import URI.ByteString.Aeson ()
-import URI.ByteString.QQ
 
 -------------------------------------------------------------------------------
 
@@ -45,10 +44,12 @@ instance Default OAuth2 where
     OAuth2
       { oauth2ClientId = ""
       , oauth2ClientSecret = ""
-      , oauth2AuthorizeEndpoint = [uri|https://www.example.com/|]
-      , oauth2TokenEndpoint = [uri|https://www.example.com/|]
-      , oauth2RedirectUri = [uri|https://www.example.com/|]
+      , oauth2AuthorizeEndpoint = parseURI' "https://www.example.com/"
+      , oauth2TokenEndpoint = parseURI' "https://www.example.com/"
+      , oauth2RedirectUri = parseURI' "https://www.example.com/"
       }
+
+parseURI' = either (\err -> error $ show err) id . parseURI laxURIParserOptions
 
 -------------------------------------------------------------------------------
 
