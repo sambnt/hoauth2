@@ -43,7 +43,7 @@ mkPkceParam = do
       }
 
 encodeCodeVerifier :: BS.ByteString -> Text
-encodeCodeVerifier = B64.extractBase64 . B64.encodeBase64Unpadded . BS.pack -- . ByteArray.unpack . hashSHA256
+encodeCodeVerifier = B64.extractBase64 . B64.encodeBase64Unpadded . BS.pack . ByteArray.unpack -- . hashSHA256
 
 genCodeVerifier :: MonadIO m => m BS.ByteString
 genCodeVerifier = liftIO $ getBytesInternal BS.empty
