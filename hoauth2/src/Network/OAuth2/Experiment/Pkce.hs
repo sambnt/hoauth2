@@ -8,7 +8,7 @@ module Network.OAuth2.Experiment.Pkce (
 
 import Control.Monad.IO.Class
 import Crypto.Hash qualified as H
-import Crypto.Random qualified as Crypto
+import System.Entropy qualified as Crypto
 import Data.Base64.Types qualified as B64
 import Data.ByteArray qualified as ByteArray
 import Data.ByteString qualified as BS
@@ -60,7 +60,7 @@ getBytesInternal :: BS.ByteString -> IO BS.ByteString
 getBytesInternal ba
   | BS.length ba >= cvMaxLen = pure (BS.take cvMaxLen ba)
   | otherwise = do
-      bs <- Crypto.getRandomBytes cvMaxLen
+      bs <- Crypto.getEntropy cvMaxLen
       let bsUnreserved = ba `BS.append` BS.filter isUnreversed bs
       getBytesInternal bsUnreserved
 
